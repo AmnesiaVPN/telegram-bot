@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "vobla-vpn-telegram-bot"
+version = "0.1.0"
+description = ""
+authors = ["Eldos <eldos.baktybekov@gmail.com>"]
+readme = "README.md"
+packages = [{include = "vobla_vpn_telegram_bot"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
