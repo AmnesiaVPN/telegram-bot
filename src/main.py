@@ -1,6 +1,7 @@
 import pathlib
 
 from aiogram import Bot, Dispatcher, executor
+from aiogram.types import ParseMode
 
 import handlers
 from config import load_config
@@ -14,7 +15,7 @@ def main():
     config_file_path = pathlib.Path(__file__).parent.parent / 'config.ini'
     config = load_config(config_file_path)
 
-    bot = Bot(config.bot.token)
+    bot = Bot(config.bot.token, parse_mode=ParseMode.HTML)
     dp = Dispatcher(bot)
     executor.start_polling(dispatcher=dp, on_startup=on_startup, skip_updates=True)
 
