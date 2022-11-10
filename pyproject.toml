@@ -8,6 +8,7 @@ packages = [{include = "vobla_vpn_telegram_bot"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+aiogram = "^2.23.1"
 
 
 [build-system]
