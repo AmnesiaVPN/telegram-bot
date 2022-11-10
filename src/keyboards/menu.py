@@ -10,6 +10,6 @@ class MenuMarkup(ReplyKeyboardMarkup):
             resize_keyboard=True,
             keyboard=[
                 [KeyboardButton('💳 Подписка'), KeyboardButton('❓ FAQ')],
-                [KeyboardButton('👥 Поддержка'), KeyboardButton('🌐 Отзывы')],
+                [KeyboardButton('👥 Поддержка'), KeyboardButton('🌐 Наш канал')],
             ],
         )
