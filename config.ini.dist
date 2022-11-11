@@ -1,2 +1,5 @@
 [telegram_bot]
 token =
+
+[server_api]
+base_url =
