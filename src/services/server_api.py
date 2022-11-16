@@ -1,7 +1,10 @@
+import contextlib
+
 import httpx
 
 import exceptions
 import models
+from config import ROOT_PATH
 
 
 class ServerAPIClient:
@@ -30,6 +33,12 @@ class ServerAPIClient:
         except exceptions.UserNotFoundError:
             return await self.create_user(telegram_id), True
 
+    async def get_user_config(self, telegram_id: int) -> str:
+        response = await self.__http_client.get(f'/users/{telegram_id}/config/')
+        if response.is_error:
+            raise Exception
+        return response.text
+
     async def close(self):
         await self.__http_client.aclose()
 
@@ -38,3 +47,14 @@ class ServerAPIClient:
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.close()
+
+
+@contextlib.contextmanager
+def deleting_temporary_config_file(telegram_id: int, config_file_text: str) -> bytes:
+    file_path = ROOT_PATH / f'{telegram_id}.conf'
+    try:
+        file_path.write_text(config_file_text)
+        with open(file_path, 'rb') as file:
+            yield file
+    finally:
+        file_path.unlink(missing_ok=True)
