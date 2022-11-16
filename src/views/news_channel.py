@@ -4,4 +4,4 @@ __all__ = ('NewsChannelView',)
 
 
 class NewsChannelView(BaseView):
-    text = 'Наш канал с новостями'
+    text = 'Подпишитесь на наш канал с новостями: @voblavpn'
