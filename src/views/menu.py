@@ -15,7 +15,7 @@ class MenuView(BaseView):
     def get_text(self) -> str:
         lines = []
         if not self.__user.is_subscribed:
-            return '❗️ У вас нету активной подписки'
+            return '❗️ У вас нет активной подписки'
         if self.__user.is_trial_period:
             lines.append('❗️ У вас пробный период')
         lines.append(
