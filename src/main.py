@@ -5,7 +5,7 @@ from aiogram.types import ParseMode
 
 import handlers
 from config import load_config
-from middlewares import ServerAPIMiddleware
+from middlewares import ServerAPIMiddleware, ConfigMiddleware
 
 
 async def on_startup(dispatcher: Dispatcher):
@@ -20,7 +20,10 @@ def main():
     bot = Bot(config.bot.token, parse_mode=ParseMode.HTML)
     dp = Dispatcher(bot)
 
+    config_middleware = ConfigMiddleware(config)
     server_api_middleware = ServerAPIMiddleware(config.server_api.base_url)
+
+    dp.setup_middleware(config_middleware)
     dp.setup_middleware(server_api_middleware)
 
     executor.start_polling(dispatcher=dp, on_startup=on_startup, skip_updates=True)
