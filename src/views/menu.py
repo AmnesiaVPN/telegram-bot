@@ -2,7 +2,6 @@ import models
 from views.base import BaseView
 
 from keyboards import MenuMarkup
-from services.subscription import is_subscription_active
 
 __all__ = ('MenuView',)
 
@@ -15,7 +14,7 @@ class MenuView(BaseView):
 
     def get_text(self) -> str:
         lines = []
-        if not is_subscription_active(self.__user.subscribed_at, self.__user.subscription_expire_at):
+        if not self.__user.is_subscribed:
             return '❗️ У вас нету активной подписки'
         if self.__user.is_trial_period:
             lines.append('❗️ У вас пробный период')
