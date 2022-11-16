@@ -3,3 +3,6 @@ token =
 
 [server_api]
 base_url =
+
+[donationalerts]
+payment_page_url =
