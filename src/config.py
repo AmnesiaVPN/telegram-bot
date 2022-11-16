@@ -3,10 +3,13 @@ import pathlib
 from dataclasses import dataclass
 
 __all__ = (
+    'ROOT_PATH',
     'BotConfig',
     'Config',
     'load_config',
 )
+
+ROOT_PATH = pathlib.Path(__file__).parent.parent
 
 
 @dataclass(frozen=True, slots=True)
