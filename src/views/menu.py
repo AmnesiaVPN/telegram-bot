@@ -1,18 +1,20 @@
 import datetime
 
+from aiogram.types import InlineKeyboardMarkup
+
 import models
 from views.base import BaseView
 
-from keyboards import MenuMarkup
+from keyboards import PaymentMenuMarkup
 
 __all__ = ('MenuView',)
 
 
 class MenuView(BaseView):
-    reply_markup = MenuMarkup()
 
-    def __init__(self, user: models.User):
+    def __init__(self, user: models.User, payment_page_url: str):
         self.__user = user
+        self.__payment_page_url = payment_page_url
 
     def get_text(self) -> str:
         lines = []
@@ -28,3 +30,6 @@ class MenuView(BaseView):
             f'\nАктивна до: {subscription_expire_at:%H:%M %d.%m.%Y}'
         )
         return '\n'.join(lines)
+
+    def get_reply_markup(self) -> InlineKeyboardMarkup:
+        return PaymentMenuMarkup(self.__payment_page_url)

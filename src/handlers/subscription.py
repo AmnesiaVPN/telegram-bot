@@ -12,7 +12,7 @@ __all__ = ('register_handlers',)
 
 async def on_user_start(message: Message, server_api_client: ServerAPIClient, config: Config):
     user, _ = await server_api_client.get_or_create_user(message.from_user.id)
-    await answer_view(message, MenuView(user))
+    await answer_view(message, MenuView(user, config.donationalerts.payment_page_url))
     if not user.is_subscribed:
         await answer_view(message, PaymentMenuView(message.from_user.id, config.donationalerts.payment_page_url))
         return

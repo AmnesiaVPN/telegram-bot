@@ -1,15 +1,9 @@
 from views.base import BaseView
+from keyboards import MenuMarkup
 
 __all__ = ('InstructionView',)
 
 
 class InstructionView(BaseView):
-    text = '''Для использования скачайте с AppStore или PlayMarket приложение Wireguard.
-
-Сохраните выданный вам в боте файл к себе в телефон. Зайдите в Wireguard, нажимайте ‘+’ и загрузите ваш файл, после переведите ползунок в активное состояние. 
-
-Банки, соцсети и т.д, не будут ругаться на использование VPN, так как IP адрес российский. 
-
-<b>Внимание! Один файл работает только для одного пользователя!</b>
-
-По всем вопросам пишите в техническую поддержку.'''
+    text = '''<a href="https://telegra.ph/Instrukciya-po-ustanovke-VoblaVpn-11-18">Инструкция по установке.</a>'''
+    reply_markup = MenuMarkup()
