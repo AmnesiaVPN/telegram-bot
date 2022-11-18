@@ -5,7 +5,7 @@ from aiogram.types import InlineKeyboardMarkup
 import models
 from views.base import BaseView
 
-from keyboards import PaymentMenuMarkup
+from keyboards import PaymentMenuMarkup, ShowPaymentMenuMarkup
 
 __all__ = ('MenuView',)
 
@@ -32,4 +32,5 @@ class MenuView(BaseView):
         return '\n'.join(lines)
 
     def get_reply_markup(self) -> InlineKeyboardMarkup:
-        return PaymentMenuMarkup(self.__payment_page_url)
+        if self.__user.is_subscribed:
+            return ShowPaymentMenuMarkup()

@@ -1,6 +1,6 @@
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters import CommandStart, Text
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 
 from config import Config
 from services.server_api import ServerAPIClient, deleting_temporary_config_file
@@ -8,6 +8,12 @@ from shortcuts import answer_view
 from views import MenuView, PaymentMenuView, InstructionView
 
 __all__ = ('register_handlers',)
+
+
+async def on_show_payment_menu(callback_query: CallbackQuery, config: Config):
+    view = PaymentMenuView(callback_query.from_user.id, config.donationalerts.payment_page_url)
+    await answer_view(callback_query.message, view)
+    await callback_query.answer()
 
 
 async def on_user_start(message: Message, server_api_client: ServerAPIClient, config: Config):
@@ -23,5 +29,6 @@ async def on_user_start(message: Message, server_api_client: ServerAPIClient, co
 
 
 def register_handlers(dispatcher: Dispatcher):
+    dispatcher.register_callback_query_handler(on_show_payment_menu, Text('show-payment-menu'))
     dispatcher.register_message_handler(on_user_start, CommandStart())
     dispatcher.register_message_handler(on_user_start, Text('💳 Подписка'))

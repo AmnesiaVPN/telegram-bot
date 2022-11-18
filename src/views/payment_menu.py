@@ -17,7 +17,7 @@ class PaymentMenuView(BaseView):
         return (
             'Оплата подписки производится через систему donationalerts'
             '\n\n❗️ <b>Важно</b> ❗️'
-            f'\nВ примечаниях к донату обязательно введите "<code>{self.__telegram_id}</code>"'
+            f'\nВ примечаниях к донату обязательно введите "<b>{self.__telegram_id}</b>"'
             f' , иначе ваша оплата не будет засчитана'
         )
 
