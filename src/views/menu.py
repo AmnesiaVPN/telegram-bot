@@ -1,3 +1,5 @@
+import datetime
+
 import models
 from views.base import BaseView
 
@@ -18,8 +20,11 @@ class MenuView(BaseView):
             return '❗️ У вас нет активной подписки'
         if self.__user.is_trial_period:
             lines.append('❗️ У вас пробный период')
+
+        subscribed_at = self.__user.subscribed_at + datetime.timedelta(hours=3)
+        subscription_expire_at = self.__user.subscription_expire_at + datetime.timedelta(hours=3)
         lines.append(
-            f'Подписка активирована: {self.__user.subscribed_at:%H:%M %d.%m.%Y}'
-            f'\nАктивна до: {self.__user.subscription_expire_at:%H:%M %d.%m.%Y}'
+            f'Подписка активирована: {subscribed_at:%H:%M %d.%m.%Y}'
+            f'\nАктивна до: {subscription_expire_at:%H:%M %d.%m.%Y}'
         )
         return '\n'.join(lines)
