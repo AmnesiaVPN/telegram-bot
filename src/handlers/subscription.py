@@ -17,7 +17,7 @@ async def on_user_start(message: Message, server_api_client: ServerAPIClient, co
         await answer_view(message, PaymentMenuView(message.from_user.id, config.donationalerts.payment_page_url))
         return
     user_config_text = await server_api_client.get_user_config(message.from_user.id)
-    await answer_view(message, InstructionView())
+    await answer_view(message, InstructionView(), disable_web_page_preview=True)
     with deleting_temporary_config_file(message.from_user.id, user_config_text) as user_config:
         await message.answer_document(user_config)
 
