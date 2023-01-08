@@ -1,6 +1,18 @@
-class UserAlreadyExistsError(Exception):
+class ServerAPIError(Exception):
     pass
 
 
-class UserNotFoundError(Exception):
+class NotFoundError(ServerAPIError):
+    pass
+
+
+class ConflictError(ServerAPIError):
+    pass
+
+
+class UserAlreadyExistsError(ConflictError):
+    pass
+
+
+class UserNotFoundError(NotFoundError):
     pass
