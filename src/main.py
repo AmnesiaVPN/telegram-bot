@@ -1,11 +1,15 @@
 import pathlib
+import functools
 
 from aiogram import Bot, Dispatcher, executor
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import ParseMode
 
 import handlers
 from config import load_config
-from middlewares import ServerAPIMiddleware, ConfigMiddleware
+from middlewares import DependencyInjectMiddleware
+from repositories import UserRepository
+from services.http_client import closing_http_client_factory
 
 
 async def on_startup(dispatcher: Dispatcher):
@@ -18,13 +22,19 @@ def main():
     config = load_config(config_file_path)
 
     bot = Bot(config.bot.token, parse_mode=ParseMode.HTML)
-    dp = Dispatcher(bot)
+    dp = Dispatcher(bot, storage=MemoryStorage())
 
-    config_middleware = ConfigMiddleware(config)
-    server_api_middleware = ServerAPIMiddleware(config.server_api.base_url)
+    configured_http_client_factory = functools.partial(
+        closing_http_client_factory,
+        base_url=config.server_api.base_url,
+    )
+    user_repository = UserRepository(configured_http_client_factory)
 
-    dp.setup_middleware(config_middleware)
-    dp.setup_middleware(server_api_middleware)
+    dependency_inject_middleware = DependencyInjectMiddleware(
+        user_repository=user_repository,
+        config=config,
+    )
+    dp.setup_middleware(dependency_inject_middleware)
 
     executor.start_polling(dispatcher=dp, on_startup=on_startup, skip_updates=True)
 
