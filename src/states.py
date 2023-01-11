@@ -1,7 +1,7 @@
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
-__all__ = ('UserRegistrationStates',)
+__all__ = ('ActivatePromocodeStates',)
 
 
-class UserRegistrationStates(StatesGroup):
+class ActivatePromocodeStates(StatesGroup):
     promocode = State()
