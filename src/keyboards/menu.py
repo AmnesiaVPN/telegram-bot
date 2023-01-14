@@ -5,7 +5,7 @@ __all__ = ('MenuMarkup',)
 
 class MenuMarkup(ReplyKeyboardMarkup):
 
-    def __init__(self):
+    def __init__(self, has_user_activated_promocode: bool):
         super().__init__(
             resize_keyboard=True,
             keyboard=[
@@ -13,3 +13,5 @@ class MenuMarkup(ReplyKeyboardMarkup):
                 [KeyboardButton('👥 Поддержка'), KeyboardButton('🌐 Наш канал')],
             ],
         )
+        if not has_user_activated_promocode:
+            self.add(KeyboardButton('🏷️ Активировать промокод'))
