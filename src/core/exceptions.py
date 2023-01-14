@@ -1,4 +1,8 @@
-class ServerAPIError(Exception):
+class ApplicationError(Exception):
+    pass
+
+
+class ServerAPIError(ApplicationError):
     pass
 
 
@@ -15,4 +19,12 @@ class UserAlreadyExistsError(ConflictError):
 
 
 class UserNotFoundError(NotFoundError):
+    pass
+
+
+class UserAlreadyActivatedPromocodeError(ConflictError):
+    pass
+
+
+class PromocodeNotFoundError(NotFoundError):
     pass
