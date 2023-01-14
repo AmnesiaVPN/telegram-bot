@@ -8,7 +8,7 @@ from aiogram.types import ParseMode
 import handlers
 from config import load_config
 from middlewares import DependencyInjectMiddleware
-from repositories import UserRepository
+from services.users import UsersAPIService
 from services.http_client import closing_http_client_factory
 
 
@@ -28,10 +28,10 @@ def main():
         closing_http_client_factory,
         base_url=config.server_api.base_url,
     )
-    user_repository = UserRepository(configured_http_client_factory)
+    users_api_service = UsersAPIService(configured_http_client_factory)
 
     dependency_inject_middleware = DependencyInjectMiddleware(
-        user_repository=user_repository,
+        users_api_service=users_api_service,
         config=config,
     )
     dp.setup_middleware(dependency_inject_middleware)
