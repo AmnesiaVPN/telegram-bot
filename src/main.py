@@ -15,6 +15,7 @@ from services.http_client import closing_http_client_factory
 async def on_startup(dispatcher: Dispatcher):
     handlers.menu.register_handlers(dispatcher)
     handlers.subscription.register_handlers(dispatcher)
+    handlers.promocodes.register_handlers(dispatcher)
 
 
 def main():
