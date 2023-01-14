@@ -43,10 +43,17 @@ class UsersAPIService:
         request_body = {'promocode': promocode}
         async with self.__http_client_factory() as client:
             response = await client.post(url, json=request_body)
+        response_body = response.json()
         if response.status_code == 200:
-            response_body = response.json()
             return models.PromocodeActivated.parse_obj(response_body)
-        elif response.status_code == 404:
-            response_body = response.json()
-            if response_body['message'] == 'Promocode is not found':
+
+        error_message = response_body['message']
+        match [error_message, response.status_code]:
+            case ['Promocode is not found', 404]:
                 raise exceptions.PromocodeNotFoundError
+            case ['Each user can activate only one promocode', 409]:
+                raise exceptions.UserAlreadyActivatedPromocodeError
+            case ['Promocode was already activated', 409]:
+                raise exceptions.PromocodeWasActivatedError
+            case ['Promocode was already expired', 410]:
+                raise exceptions.PromocodeWasExpiredError

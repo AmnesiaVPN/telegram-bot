@@ -3,15 +3,19 @@ class ApplicationError(Exception):
 
 
 class ServerAPIError(ApplicationError):
-    pass
+    status_code = 500
 
 
 class NotFoundError(ServerAPIError):
-    pass
+    status_code = 404
 
 
 class ConflictError(ServerAPIError):
-    pass
+    status_code = 409
+
+
+class GoneError(ServerAPIError):
+    status_code = 410
 
 
 class UserAlreadyExistsError(ConflictError):
@@ -27,4 +31,12 @@ class UserAlreadyActivatedPromocodeError(ConflictError):
 
 
 class PromocodeNotFoundError(NotFoundError):
+    pass
+
+
+class PromocodeWasActivatedError(ConflictError):
+    pass
+
+
+class PromocodeWasExpiredError(GoneError):
     pass

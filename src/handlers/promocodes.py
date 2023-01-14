@@ -27,6 +27,22 @@ async def on_user_already_activated_promocode_error(
     return True
 
 
+async def on_promocode_was_activated_error(
+        update: Update,
+        exception: exceptions.PromocodeWasActivatedError,
+) -> bool:
+    await update.message.answer('😔 Этот промокод уже был активирован')
+    return True
+
+
+async def on_promocode_was_expired_error(
+        update: Update,
+        exception: exceptions.PromocodeWasExpiredError,
+) -> bool:
+    await update.message.answer('⌛ Промокод больше недействителен')
+    return True
+
+
 async def on_promocode_input_invalid_length(message: Message) -> None:
     await message.answer('❗️ Неправильный формат промокода')
 
@@ -47,6 +63,14 @@ async def on_activate_promocode_menu(message: Message, users_api_service: UsersA
 
 
 def register_handlers(dispatcher: Dispatcher) -> None:
+    dispatcher.register_errors_handler(
+        on_promocode_was_expired_error,
+        exception=exceptions.PromocodeWasExpiredError,
+    )
+    dispatcher.register_errors_handler(
+        on_promocode_was_activated_error,
+        exception=exceptions.PromocodeWasActivatedError,
+    )
     dispatcher.register_errors_handler(
         on_promocode_not_found_error,
         exception=exceptions.PromocodeNotFoundError,
