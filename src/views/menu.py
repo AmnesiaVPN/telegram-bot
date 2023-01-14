@@ -3,9 +3,8 @@ import datetime
 from aiogram.types import InlineKeyboardMarkup
 
 import models
+from keyboards import ShowPaymentMenuMarkup
 from views.base import BaseView
-
-from keyboards import PaymentMenuMarkup, ShowPaymentMenuMarkup
 
 __all__ = ('MenuView',)
 
@@ -24,7 +23,7 @@ class MenuView(BaseView):
             lines.append('❗️ У вас пробный период')
 
         subscribed_at = self.__user.subscribed_at + datetime.timedelta(hours=3)
-        subscription_expire_at = self.__user.subscription_expire_at + datetime.timedelta(hours=3)
+        subscription_expire_at = self.__user.subscription_expires_at + datetime.timedelta(hours=3)
         lines.append(
             f'Подписка активирована: {subscribed_at:%H:%M %d.%m.%Y}'
             f'\nАктивна до: {subscription_expire_at:%H:%M %d.%m.%Y}'
