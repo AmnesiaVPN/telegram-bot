@@ -1,4 +1,4 @@
-import configparser
+import tomllib
 import pathlib
 from dataclasses import dataclass
 
@@ -36,21 +36,15 @@ class Config:
 
 
 def load_config(file_path: str | pathlib.Path) -> Config:
-    config = configparser.ConfigParser()
-    config.read(file_path)
+    with open(file_path, 'rb') as file:
+        config = tomllib.load(file)
 
     bot_config = config['telegram_bot']
     server_api_config = config['server_api']
     donationalerts_config = config['donationalerts']
 
     return Config(
-        bot=BotConfig(
-            token=bot_config.get('token'),
-        ),
-        server_api=ServerAPIConfig(
-            base_url=server_api_config.get('base_url'),
-        ),
-        donationalerts=DonationAlertsConfig(
-            payment_page_url=donationalerts_config.get('payment_page_url'),
-        ),
+        bot=BotConfig(token=bot_config['token']),
+        server_api=ServerAPIConfig(base_url=server_api_config['base_url']),
+        donationalerts=DonationAlertsConfig(payment_page_url=donationalerts_config['payment_page_url']),
     )

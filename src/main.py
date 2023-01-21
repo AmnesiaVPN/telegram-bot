@@ -19,7 +19,7 @@ async def on_startup(dispatcher: Dispatcher):
 
 
 def main():
-    config_file_path = pathlib.Path(__file__).parent.parent / 'config.ini'
+    config_file_path = pathlib.Path(__file__).parent.parent / 'config.toml'
     config = load_config(config_file_path)
 
     bot = Bot(config.bot.token, parse_mode=ParseMode.HTML)

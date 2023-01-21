@@ -1,0 +1,8 @@
+[telegram_bot]
+token = "your token"
+
+[server_api]
+base_url = "server api url"
+
+[donationalerts]
+payment_page_url = "payment page url"

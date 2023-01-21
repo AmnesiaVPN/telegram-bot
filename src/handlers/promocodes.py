@@ -1,3 +1,5 @@
+import asyncio
+
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
@@ -6,7 +8,7 @@ from aiogram.types import Message, Update, ContentType
 from core import exceptions
 from filters import MessageLengthFilter
 from services.users import UsersAPIService
-from shortcuts import answer_view
+from shortcuts import answer_view, sleep_for
 from states import ActivatePromocodeStates
 from views import PromocodeActivatedView
 
@@ -48,10 +50,14 @@ async def on_promocode_input_invalid_length(message: Message) -> None:
 
 
 async def on_promocode_input(message: Message, users_api_service: UsersAPIService, state: FSMContext) -> None:
+    sent_message = await message.answer('<i>Проверка промокода...</i>')
+    await sleep_for(seconds=1.5)
     promocode_activated = await users_api_service.activate_promocode(message.from_user.id, message.text)
-    await state.finish()
     view = PromocodeActivatedView(subscription_expires_at=promocode_activated.subscription_expires_at)
-    await answer_view(message, view)
+    async with asyncio.TaskGroup() as task_group:
+        task_group.create_task(state.finish())
+        task_group.create_task(answer_view(message, view))
+        task_group.create_task(sent_message.delete())
 
 
 async def on_activate_promocode_menu(message: Message, users_api_service: UsersAPIService) -> None:
