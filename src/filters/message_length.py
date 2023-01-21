@@ -1,5 +1,6 @@
 from aiogram.dispatcher.filters import BoundFilter
-from aiogram.types import Message
+
+from models.protocols import MessageProtocol
 
 __all__ = ('MessageLengthFilter',)
 
@@ -13,5 +14,5 @@ class MessageLengthFilter(BoundFilter):
         self.__min_length = min_length or 1
         self.__max_length = max_length or 4096
 
-    async def check(self, message: Message) -> bool:
+    async def check(self, message: MessageProtocol) -> bool:
         return self.__min_length <= len(message.text) <= self.__max_length
