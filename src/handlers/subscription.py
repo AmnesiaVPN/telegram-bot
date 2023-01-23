@@ -15,14 +15,14 @@ __all__ = ('register_handlers',)
 
 
 async def on_user_registered(message: Message, user: models.User, config: Config, users_api_service: UsersAPIService):
-    await answer_view(message, MenuView(user, config.donationalerts.payment_page_url))
     if not user.is_subscribed:
         await answer_view(message, PaymentMenuView(message.from_user.id, config.donationalerts.payment_page_url))
         return
     user_config_text = await users_api_service.get_config(message.from_user.id)
-    await answer_view(message, InstructionView(user.has_activated_promocode), disable_web_page_preview=True)
+    await answer_view(message, MenuView(user, config.donationalerts.payment_page_url))
     with deleting_temporary_config_file(message.from_user.id, user_config_text) as user_config:
         await message.answer_document(user_config)
+    await answer_view(message, InstructionView(user.has_activated_promocode), disable_web_page_preview=True)
 
 
 async def on_show_payment_menu(callback_query: CallbackQuery, config: Config):
